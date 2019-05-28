@@ -1,49 +1,32 @@
 import {
-    SET_ONE_BOARD,
-    SET_TWO_BOARD,
+    INIT_ONE_BINGO,
+    INIT_TWO_BINGO,
+    SET_ONE_BINGO,
+    SET_TWO_BINGO,
     NEXT_TURN,
     CHECKNUM_INIT,
     CHECKNUM,
     GAME_START_TOGGLE,
-    
-
 } from './types';
 
-export const set_board = (index) => dispatch => {
-
-    let array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25];
-    array.sort(() => {
-        return Math.random() - Math.random();
-    })
-
-    const { length } = array;
-    const maxLength = 5;
-    const iteratorCount = length / maxLength;
+export const init_bingo = () => dispatch => {
     let data = [];
-
-    for (let i = 0; i < iteratorCount; i++) {
-        data = [
-            ...data,
-            array.slice(i * maxLength, (i + 1) * maxLength),
-        ];
-    }
-
-    if (index === 1) {
-        dispatch({
-            type: SET_ONE_BOARD,
-            payload: data
-        });
-    } else {
-        dispatch({
-            type: SET_TWO_BOARD,
-            payload: data
-        });
-    }
-};
+    dispatch({
+        type: INIT_ONE_BINGO,
+        payload: data
+    });
+    dispatch({
+        type: INIT_TWO_BINGO,
+        payload: data
+    });
+}
 
 export const checknum_init = () => dispatch => {
 
-    let data = [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false];
+    let data = [];
+    for(let index = 0; index <= 25; index ++){
+        data.push(false)
+    }
     dispatch({
         type: CHECKNUM_INIT,
         payload: data
@@ -55,7 +38,6 @@ export const checknum_click = (num) => dispatch => {
         type: CHECKNUM,
         payload: num
     });
-
 }
 
 export const game_start_toggle = (data) => dispatch => {
@@ -67,9 +49,25 @@ export const game_start_toggle = (data) => dispatch => {
 
 export const next_turn_toggle = (who) => dispatch => {
 
-    let data = (who ===1) ? 2 : 1;
+    let data = (who === 1) ? 2 : 1;
     dispatch({
         type: NEXT_TURN,
         payload: data
     });
+}
+
+export const bingo_check = (array, player) => dispatch => {
+
+    if (player === 1) {
+        dispatch({
+            type: SET_ONE_BINGO,
+            payload: array
+        });
+    } else {
+        dispatch({
+            type: SET_TWO_BINGO,
+            payload: array
+        });
+    }
+
 }

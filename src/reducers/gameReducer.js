@@ -1,31 +1,43 @@
 import {
-  SET_ONE_BOARD,
-  SET_TWO_BOARD,
+  INIT_ONE_BINGO,
+  INIT_TWO_BINGO,
+  SET_ONE_BINGO,
+  SET_TWO_BINGO,
+  NEXT_TURN,
   CHECKNUM_INIT,
   CHECKNUM,
   GAME_START_TOGGLE,
-  NEXT_TURN,
 } from '../actions/types';
 
 const initialState = {
-  oneboard: [['', '', '', '', ''], ['', '', '', '', ''], ['', '', '', '', ''], ['', '', '', '', ''], ['', '', '', '', '']],
-  twoboard: [['', '', '', '', ''], ['', '', '', '', ''], ['', '', '', '', ''], ['', '', '', '', ''], ['', '', '', '', '']],
   checknum: [],
+  onebingo : [],
+  twobingo : [],
   gameStart: false,
   turn : 1
 };
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case SET_ONE_BOARD:
+      case INIT_ONE_BINGO:
       return {
         ...state,
-        oneboard: action.payload
+        onebingo: action.payload
       };
-    case SET_TWO_BOARD:
+    case INIT_TWO_BINGO:
       return {
         ...state,
-        twoboard: action.payload
+        twobingo: action.payload
+      };
+      case SET_ONE_BINGO:
+      return {
+        ...state,
+        onebingo: [action.payload, ...state.onebingo]
+      };
+    case SET_TWO_BINGO:
+      return {
+        ...state,
+        twobingo: [action.payload, ...state.twobingo]
       };
     case CHECKNUM_INIT:
       return {

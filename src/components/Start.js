@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { set_board, game_start_toggle, checknum_init } from "../actions/gameActions";
+import { game_start_toggle,next_turn_toggle, checknum_init, init_bingo } from "../actions/gameActions";
 
 class Start extends Component {
   constructor(props) {
@@ -10,12 +10,11 @@ class Start extends Component {
   }
 
   onClick(e) {
-    const { set_board, game_start_toggle, gameStart, checknum_init } = this.props;
+    const { game_start_toggle, gameStart, checknum_init } = this.props;
     e.preventDefault();
-    set_board(1);
-    set_board(2);
     game_start_toggle(!gameStart);
     checknum_init();
+    next_turn_toggle(2);
   }
 
   render() {
@@ -35,9 +34,11 @@ class Start extends Component {
 }
 const mapStateToProps = state => ({
   oneboard: state.oneboard,
-  gameStart: state.gameStart
+  gameStart: state.gameStart,
+  onebingo : state.onebingo,
+  twobingo : state.twobingo
 });
 export default connect(
   mapStateToProps,
-  { set_board, game_start_toggle, checknum_init }
+  {  game_start_toggle, next_turn_toggle, checknum_init, init_bingo }
 )(Start);
