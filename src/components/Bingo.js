@@ -1,34 +1,43 @@
 import React, { Component } from 'react'
 import { connect } from "react-redux";
-import { init_bingo, next_turn_toggle, bingo_check, game_start_toggle } from "../actions/gameActions";
+import OnePlayerBingo from './OnePlayerBingo';
+import TwoPlayerBingo from './TwoPlayerBingo';
+import { checknum_init, init_bingo, next_turn_toggle, bingo_check, game_start_toggle } from "../actions/gameActions";
 
 class Bingo extends Component {
     componentDidUpdate(prevProps, prevState) {
-
-        if(prevProps.onebingo.length === 5  && prevProps.twobingo.length === 5){
-            const {init_bingo, gameStart } = this.props;
+        const { init_bingo, gameStart, checknum_init, onebingo, twobingo } = this.props;
+        if (onebingo.length === 5 && twobingo.length === 5) {
+            const { init_bingo, gameStart, checknum_init } = this.props;
             alert("무승부입니다.");
             game_start_toggle(!gameStart);
+            checknum_init();
             init_bingo();
+            next_turn_toggle(2);
         }
 
-        else if(prevProps.onebingo.length >= 5 && prevProps.twobingo.length < 5) {
-            const {init_bingo, gameStart } = this.props;
+        else if (onebingo.length >= 5 && twobingo.length < 5) {
+
             alert("1P가 빙고를 완성했습니다.");
             game_start_toggle(!gameStart);
+            checknum_init();
             init_bingo();
-        } else if (prevProps.onebingo.length < 5 && prevProps.twobingo.length >= 5) {
-            const {init_bingo, gameStart } = this.props;
+            next_turn_toggle(2);
+        } else if (onebingo.length < 5 && twobingo.length >= 5) {
+
             alert("2P가 빙고를 완성했습니다.");
             game_start_toggle(!gameStart);
+            checknum_init();
             init_bingo();
+            next_turn_toggle(2);
         }
     }
 
     render() {
         return (
             <div>
-
+                <OnePlayerBingo/>
+                <TwoPlayerBingo/>
             </div>
         )
     }
@@ -43,5 +52,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps,
-    { init_bingo, next_turn_toggle, bingo_check }
+    { checknum_init, init_bingo, next_turn_toggle, bingo_check }
 )(Bingo);

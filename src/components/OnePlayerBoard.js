@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import PropTypes from "prop-types";
 import { checknum_click, next_turn_toggle, bingo_check } from "../actions/gameActions";
 import Cell from './Cell';
 import "../css/board.css";
@@ -16,36 +15,46 @@ class OnePlayerBoard extends Component {
     }
 
     componentWillUpdate(nextProps, nextState) {
-        if (nextProps.gameStart !== this.props.gameStart) {
+        if (nextProps.gameStart !== this.props.gameStart ) {
+            if(nextProps.gameStart){
+                let array = [];
+                for (let index = 1; index <= 25; index++) {
+                    array.push(index);
+                }
+                array.sort(() => {
+                    return Math.random() - Math.random();
+                })
+    
+                const { length } = array;
+                const maxLength = 5;
+                const iteratorCount = length / maxLength;
+                let data = [];
+    
+                for (let i = 0; i < iteratorCount; i++) {
+                    data = [
+                        ...data,
+                        array.slice(i * maxLength, (i + 1) * maxLength),
+                    ];
+                }
+    
+                this.setState({
+                    oneboard: data
+                });
+            } else {
+                let data = [];
+                for(let index = 0; index <5; index ++){
+                    data.push(['','','','','']);
+                }
 
-            let array = [];
-            for (let index = 1; index <= 25; index++) {
-                array.push(index);
+                this.setState({
+                    oneboard: data
+                });
             }
-            array.sort(() => {
-                return Math.random() - Math.random();
-            })
-
-            const { length } = array;
-            const maxLength = 5;
-            const iteratorCount = length / maxLength;
-            let data = [];
-
-            for (let i = 0; i < iteratorCount; i++) {
-                data = [
-                    ...data,
-                    array.slice(i * maxLength, (i + 1) * maxLength),
-                ];
-            }
-
-            this.setState({
-                oneboard: data
-            });
         }
     }
 
     componentDidUpdate(prevProps, prevState) {
-      
+
         const { checknum, bingo_check, gameStart } = this.props;
         const { oneboard } = this.state;
         for (let num in checknum) {
